@@ -1,13 +1,49 @@
 const libraryContainer = document.querySelector(".library");
 
-const myLibrary = [{title: 'The Hobbit', author: 'J.R.R. Tolkien', pages: 295, read: false}, {title: 'The Hobbit', author: 'J.R.R. Tolkien', pages: 295, read: true}];
+const dialog = document.querySelector(".add-book-dialog")
+const openBtn = document.querySelector(".add");
+const cancelBtn = document.querySelector(".close");
+const form = document.querySelector("form");
+
+const myLibrary = [{ title: 'The Hobbit', author: 'J.R.R. Tolkien', pages: 295, read: false }, { title: "To Kill a Mockingbird", author: "Harper Lee", pages: 281, read: true }];
 
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = read ?? false;
+    this.read = read;
+    this.id = crypto.randomUUID();
 }
+
+dialog.addEventListener("close", () => {
+    form.reset();
+})
+
+openBtn.addEventListener("click", () => {
+    dialog.showModal();
+});
+
+cancelBtn.addEventListener("click", () => {
+    dialog.close();
+    form.reset;
+});
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const title = document.getElementById("title").value;
+    const author = document.getElementById("author").value;
+    const pages = Number(document.getElementById("pages").value);
+    const read = document.getElementById("read").checked;
+
+    const newBook = addBookToLibrary(title, author, pages, read);
+
+    renderLibrary();
+
+    dialog.close();
+    form.reset();
+})
+
 
 function addBookToLibrary(title, author, pages, read) {
     const newBook = new Book(title, author, pages, read);
@@ -15,28 +51,32 @@ function addBookToLibrary(title, author, pages, read) {
     return newBook;
 }
 
-myLibrary.forEach(book => {
-    const bookDiv = document.createElement("div");
+function renderLibrary() {
+    myLibrary.forEach(book => {
+        const bookDiv = document.createElement("div");
 
-    const titleDisplay = document.createElement("p");
-    const authorDisplay = document.createElement("p");
-    const pagesDisplay = document.createElement("p");
-    const readDisplay = document.createElement("p");
+        const titleDisplay = document.createElement("p");
+        const authorDisplay = document.createElement("p");
+        const pagesDisplay = document.createElement("p");
+        const readDisplay = document.createElement("p");
 
-    titleDisplay.textContent = book.title;
-    authorDisplay.textContent = book.author;
-    pagesDisplay.textContent = book.pages;
+        titleDisplay.textContent = book.title;
+        authorDisplay.textContent = `By ${book.author}`;
+        pagesDisplay.textContent = `${book.pages} pages`;
 
-    if (book.read === false) {
-        readDisplay.textContent = "Not yet read"
-    } else {
-        readDisplay.textContent = "Already read"
-    };
+        if (book.read === false) {
+            readDisplay.textContent = "Not yet read"
+        } else {
+            readDisplay.textContent = "Already read"
+        };
 
-    bookDiv.appendChild(titleDisplay);
-    bookDiv.appendChild(authorDisplay);
-    bookDiv.appendChild(pagesDisplay);
-    bookDiv.appendChild(readDisplay);
+        bookDiv.appendChild(titleDisplay);
+        bookDiv.appendChild(authorDisplay);
+        bookDiv.appendChild(pagesDisplay);
+        bookDiv.appendChild(readDisplay);
 
-    libraryContainer.appendChild(bookDiv);
-})
+        libraryContainer.appendChild(bookDiv);
+    })
+}
+
+renderLibrary();
