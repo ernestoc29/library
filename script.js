@@ -65,8 +65,12 @@ function renderLibrary() {
         bookDiv.dataset.id = book.id;
         bookDiv.classList.add("book");
 
+        const btnContainer = document.createElement("div");
+        btnContainer.classList = "btn-container"
+
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "Remove Book";
+        deleteBtn.classList.add("book-btn");
         deleteBtn.classList.add("delete-btn");
         deleteBtn.addEventListener("click", () => {
             myLibrary = myLibrary.filter(item => item.id !== bookDiv.dataset.id);
@@ -75,12 +79,21 @@ function renderLibrary() {
 
         const toggleReadBtn = document.createElement("button");
         toggleReadBtn.textContent = "Toggle Read";
+        toggleReadBtn.classList.add("book-btn");
         toggleReadBtn.classList.add("toggle-btn")
         toggleReadBtn.addEventListener("click", () => {
             book.toggleRead();
             renderLibrary();
         })
 
+        const toggleIcon = document.createElement("span");
+        toggleIcon.classList.add("material-symbols-outlined");
+        toggleIcon.textContent = "visibility";
+
+        const deleteIcon = document.createElement("span");
+        deleteIcon.classList.add("material-symbols-outlined");
+        deleteIcon.textContent = "delete";
+        
         const titleDisplay = document.createElement("p");
         const authorDisplay = document.createElement("p");
         const pagesDisplay = document.createElement("p");
@@ -98,11 +111,9 @@ function renderLibrary() {
         if (book.read) {
             readDisplay.textContent = "Already read";
             bookDiv.classList.add("book-read");
-            readDisplay.classList.add("status-read");
         } else {
             readDisplay.textContent = "Not yet read";
             bookDiv.classList.add("book-unread");
-            readDisplay.classList.add("status-unread");
         }
 
         bookDiv.appendChild(titleDisplay);
@@ -110,8 +121,12 @@ function renderLibrary() {
         bookDiv.appendChild(pagesDisplay);
         bookDiv.appendChild(readDisplay);
 
-        bookDiv.appendChild(toggleReadBtn);
-        bookDiv.appendChild(deleteBtn);
+        bookDiv.appendChild(btnContainer);
+        btnContainer.appendChild(toggleReadBtn);
+        btnContainer.appendChild(deleteBtn);
+
+        toggleReadBtn.appendChild(toggleIcon);
+        deleteBtn.appendChild(deleteIcon);
 
         libraryContainer.appendChild(bookDiv);
     })
