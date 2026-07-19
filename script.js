@@ -5,7 +5,10 @@ const openBtn = document.querySelector(".add");
 const cancelBtn = document.querySelector(".close");
 const form = document.querySelector("form");
 
-const myLibrary = [{ title: 'The Hobbit', author: 'J.R.R. Tolkien', pages: 295, read: false }, { title: "To Kill a Mockingbird", author: "Harper Lee", pages: 281, read: true }];
+let myLibrary = [
+    new Book("The Hobbit", "J.R.R. Tolkien", 295, false),
+    new Book("To Kill a Mockingbird", "Harper Lee", 281, true)
+];
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -25,7 +28,7 @@ openBtn.addEventListener("click", () => {
 
 cancelBtn.addEventListener("click", () => {
     dialog.close();
-    form.reset;
+    form.reset();
 });
 
 form.addEventListener("submit", (e) => {
@@ -36,7 +39,7 @@ form.addEventListener("submit", (e) => {
     const pages = Number(document.getElementById("pages").value);
     const read = document.getElementById("read").checked;
 
-    const newBook = addBookToLibrary(title, author, pages, read);
+    addBookToLibrary(title, author, pages, read);
 
     renderLibrary();
 
@@ -48,12 +51,22 @@ form.addEventListener("submit", (e) => {
 function addBookToLibrary(title, author, pages, read) {
     const newBook = new Book(title, author, pages, read);
     myLibrary.push(newBook);
-    return newBook;
 }
 
 function renderLibrary() {
+    libraryContainer.innerHTML = "";
+
     myLibrary.forEach(book => {
         const bookDiv = document.createElement("div");
+        bookDiv.dataset.id = book.id;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Remove Book"
+        deleteBtn.addEventListener("click", () => {
+           myLibrary = myLibrary.filter(item => item.id !== bookDiv.dataset.id);
+           console.log(myLibrary)
+           bookDiv.remove();
+        })
 
         const titleDisplay = document.createElement("p");
         const authorDisplay = document.createElement("p");
@@ -75,7 +88,10 @@ function renderLibrary() {
         bookDiv.appendChild(pagesDisplay);
         bookDiv.appendChild(readDisplay);
 
+        bookDiv.appendChild(deleteBtn);
         libraryContainer.appendChild(bookDiv);
+
+        console.log(book.title);
     })
 }
 
