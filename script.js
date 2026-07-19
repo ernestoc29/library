@@ -18,6 +18,10 @@ function Book(title, author, pages, read) {
     this.id = crypto.randomUUID();
 }
 
+Book.prototype.toggleRead = function() {
+    this.read = !this.read
+};
+
 dialog.addEventListener("close", () => {
     form.reset();
 })
@@ -64,8 +68,14 @@ function renderLibrary() {
         deleteBtn.textContent = "Remove Book"
         deleteBtn.addEventListener("click", () => {
            myLibrary = myLibrary.filter(item => item.id !== bookDiv.dataset.id);
-           console.log(myLibrary)
-           bookDiv.remove();
+           renderLibrary();
+        })
+
+        const toggleReadBtn = document.createElement("button");
+        toggleReadBtn.textContent = "Toggle Read";
+        toggleReadBtn.addEventListener("click", () => {
+            book.toggleRead();
+            renderLibrary();
         })
 
         const titleDisplay = document.createElement("p");
@@ -88,10 +98,10 @@ function renderLibrary() {
         bookDiv.appendChild(pagesDisplay);
         bookDiv.appendChild(readDisplay);
 
+        bookDiv.appendChild(toggleReadBtn);
         bookDiv.appendChild(deleteBtn);
-        libraryContainer.appendChild(bookDiv);
 
-        console.log(book.title);
+        libraryContainer.appendChild(bookDiv);
     })
 }
 
