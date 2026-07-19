@@ -63,16 +63,19 @@ function renderLibrary() {
     myLibrary.forEach(book => {
         const bookDiv = document.createElement("div");
         bookDiv.dataset.id = book.id;
+        bookDiv.classList.add("book");
 
         const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "Remove Book"
+        deleteBtn.textContent = "Remove Book";
+        deleteBtn.classList.add("delete-btn");
         deleteBtn.addEventListener("click", () => {
-           myLibrary = myLibrary.filter(item => item.id !== bookDiv.dataset.id);
-           renderLibrary();
+            myLibrary = myLibrary.filter(item => item.id !== bookDiv.dataset.id);
+            renderLibrary();
         })
 
         const toggleReadBtn = document.createElement("button");
         toggleReadBtn.textContent = "Toggle Read";
+        toggleReadBtn.classList.add("toggle-btn")
         toggleReadBtn.addEventListener("click", () => {
             book.toggleRead();
             renderLibrary();
@@ -83,15 +86,24 @@ function renderLibrary() {
         const pagesDisplay = document.createElement("p");
         const readDisplay = document.createElement("p");
 
+        titleDisplay.classList.add("title");
+        authorDisplay.classList.add("author");
+        pagesDisplay.classList.add("pages");
+        readDisplay.classList.add("status");
+
         titleDisplay.textContent = book.title;
         authorDisplay.textContent = `By ${book.author}`;
         pagesDisplay.textContent = `${book.pages} pages`;
 
-        if (book.read === false) {
-            readDisplay.textContent = "Not yet read"
+        if (book.read) {
+            readDisplay.textContent = "Already read";
+            bookDiv.classList.add("book-read");
+            readDisplay.classList.add("status-read");
         } else {
-            readDisplay.textContent = "Already read"
-        };
+            readDisplay.textContent = "Not yet read";
+            bookDiv.classList.add("book-unread");
+            readDisplay.classList.add("status-unread");
+        }
 
         bookDiv.appendChild(titleDisplay);
         bookDiv.appendChild(authorDisplay);
