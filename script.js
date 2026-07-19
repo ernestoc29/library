@@ -5,10 +5,7 @@ const openBtn = document.querySelector(".add");
 const cancelBtn = document.querySelector(".close");
 const form = document.querySelector("form");
 
-let myLibrary = [
-    new Book("The Hobbit", "J.R.R. Tolkien", 295, false),
-    new Book("To Kill a Mockingbird", "Harper Lee", 281, true)
-];
+let myLibrary = [];
 
 function Book(title, author, pages, read) {
     this.title = title;
