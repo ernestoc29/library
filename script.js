@@ -7,17 +7,19 @@ const form = document.querySelector("form");
 
 let myLibrary = [];
 
-function Book(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    this.id = crypto.randomUUID();
-}
+class Book {
+    constructor(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+        this.id = crypto.randomUUID();
+    }
 
-Book.prototype.toggleRead = function() {
-    this.read = !this.read
-};
+    toggleRead() {
+        this.read = !this.read;
+    }
+}
 
 dialog.addEventListener("close", () => {
     form.reset();
@@ -90,7 +92,7 @@ function renderLibrary() {
         const deleteIcon = document.createElement("span");
         deleteIcon.classList.add("material-symbols-outlined");
         deleteIcon.textContent = "delete";
-        
+
         const titleDisplay = document.createElement("p");
         const authorDisplay = document.createElement("p");
         const pagesDisplay = document.createElement("p");
